@@ -18,9 +18,9 @@ RUN set -ex \
 
 WORKDIR ${WATCHING_DIR}
 
-COPY gulpfile.js ${WATCHER_DIR}/
 COPY package-lock.json ${WATCHER_DIR}/
-COPY package.json ${WATCHER_DIR}/
+COPY package.json ${WATCHER_DIR}/package.json
+COPY gulpfile.js ${WATCHER_DIR}/
 
 RUN set -ex \
 #     && sed -e "s|\${WATCHER_DIR}|${WATCHER_DIR}|g" -i ${WATCHER_DIR}/gulpfile.js \
