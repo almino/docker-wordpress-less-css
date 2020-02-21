@@ -5,6 +5,7 @@ const less = require('gulp-less')
 const csso = require('gulp-csso')
 const Autoprefix = require('less-plugin-autoprefix')
 const sourcemaps = require('gulp-sourcemaps')
+const gcmq = require('gulp-group-css-media-queries')
 
 const dir = process.env.WATCHING_DIR || '${WATCHING_DIR}'
 const mainFile = `${dir}/style.less`
@@ -12,13 +13,15 @@ const mainFile = `${dir}/style.less`
 function compileLess() {
     return src(mainFile)
         .pipe(sourcemaps.init())
-        .on('end', () => log('Tranpiling Less CSS file ' + basename(mainFile)))
+        .on('end', () => log('Transpiling Less CSS file ' + basename(mainFile)))
         .pipe(less({
             plugins: [
                 new Autoprefix({ browsers: ['ie 6', '> 1%', 'last 2 versions'] }),
             ]
         }))
         .on('end', () => log('Less CSS file ' + basename(mainFile) + ' transpiled!'))
+        .pipe(gcmq())
+        .on('end', () => log('Media queries on ' + basename(mainFile) + ' grouped!'))
         .pipe(csso({
             forceMediaMerge: process.env.FORCE_MEDIA_MERGE || '${FORCE_MEDIA_MERGE}',
         }))
